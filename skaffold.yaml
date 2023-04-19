@@ -1,0 +1,59 @@
+apiVersion: skaffold/v3
+kind: Config
+deploy:
+  kubectl: {}
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: nabethd/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.js'
+            dest: .
+    - image: nabethd/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: nabethd/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: nabethd/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: nabethd/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: nabethd/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
